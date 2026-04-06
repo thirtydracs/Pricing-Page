@@ -1,147 +1,407 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>Site Hub – Pricing</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: rgba(255,255,255,0.06);
+      --panel-border: rgba(255,255,255,0.10);
+      --text: #f5f7fa;
+      --muted: #9aa4b2;
+      --accent: #f59e0b;
+      --accent-2: #ffb84d;
+      --line: rgba(255,255,255,0.08);
+      --success: #22c55e;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
       margin: 0;
-      padding: 20px;
+      font-family: Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(245,158,11,0.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(255,255,255,0.05), transparent 22%),
+        linear-gradient(180deg, #0b0f14 0%, #111827 100%);
+      color: var(--text);
+      padding: 28px 18px 60px;
     }
 
     .wrap {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
-    h1 {
+    .hero {
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 42px;
+      padding: 24px 12px 10px;
     }
 
-    p.subtitle {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #555;
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      background: rgba(245,158,11,0.10);
+      border: 1px solid rgba(245,158,11,0.18);
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(34px, 6vw, 62px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      max-width: 720px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .top-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin: 26px 0 0;
+    }
+
+    .top-pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: #dbe3ec;
+      font-size: 14px;
     }
 
     .grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 22px;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 860px) {
       .grid {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: stretch;
       }
     }
 
     .card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 30%);
+      pointer-events: none;
+    }
+
+    .card.popular {
+      border: 1px solid rgba(245,158,11,0.45);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.42);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+      color: #dce4ee;
+    }
+
+    .popular .badge {
+      background: rgba(245,158,11,0.14);
+      border-color: rgba(245,158,11,0.28);
+      color: #ffd089;
     }
 
     .card h2 {
-      margin-top: 0;
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: -0.03em;
+    }
+
+    .desc {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      min-height: 48px;
     }
 
     .price {
-      font-size: 26px;
-      font-weight: bold;
-      margin: 10px 0 20px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin: 0 0 18px;
+    }
+
+    .price strong {
+      font-size: 40px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .price span {
+      color: var(--muted);
+      font-size: 15px;
+      padding-bottom: 4px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 18px 0 18px;
     }
 
     ul {
-      padding-left: 18px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
     li {
-      margin-bottom: 8px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 0;
+      color: #e7edf5;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      line-height: 1.45;
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    li::before {
+      content: "•";
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 1;
+      margin-top: -1px;
+    }
+
+    .cta-wrap {
+      margin-top: 24px;
     }
 
     .btn {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-      padding: 12px;
-      background: #111;
-      color: white;
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 14px;
       text-decoration: none;
-      border-radius: 8px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: 0.25s ease;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: #ffffff;
+      color: #111827;
     }
 
-    .highlight {
-      border: 2px solid #111;
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .popular .btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #111;
+      border: none;
+    }
+
+    .foot {
+      margin-top: 34px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .foot strong {
+      color: var(--text);
+    }
+
+    .bottom-note {
+      max-width: 800px;
+      margin: 44px auto 0;
+      padding: 20px 22px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: #dbe3ec;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 859px) {
+      .card.popular {
+        transform: none;
+      }
+
+      .desc {
+        min-height: auto;
+      }
     }
   </style>
 </head>
-
 <body>
 
-<div class="wrap">
+  <div class="wrap">
 
-  <h1>Site Hub</h1>
-  <p class="subtitle">Know what’s happening across your jobs — and stay in control</p>
+    <section class="hero">
+      <div class="eyebrow">Construction Visibility Platform</div>
+      <h1>Site Hub Pricing</h1>
+      <p class="subtitle">
+        Know what is happening across your jobs. Spot issues early. Tighten reporting.
+        Get clearer control over site activity, labour, and compliance.
+      </p>
 
-  <div class="grid">
+      <div class="top-strip">
+        <div class="top-pill">Weekly snapshots</div>
+        <div class="top-pill">Site reporting structure</div>
+        <div class="top-pill">Compliance visibility</div>
+      </div>
+    </section>
 
-    <!-- VISIBILITY -->
-    <div class="card">
-      <h2>Visibility</h2>
-      <p class="price">$350 – $500 / week</p>
+    <section class="grid">
 
-      <ul>
-        <li>Weekly site snapshot</li>
-        <li>Job status (On Track / At Risk / Behind)</li>
-        <li>What’s holding jobs up</li>
-        <li>Labour signal</li>
-        <li>Clear next actions</li>
-      </ul>
+      <div class="card">
+        <div class="badge">Starter</div>
+        <h2>Visibility</h2>
+        <p class="desc">
+          For builders who need a simple weekly view of site position across active jobs.
+        </p>
 
-      <a href="#" class="btn">Start with Audit</a>
+        <div class="price">
+          <strong>$350–$500</strong>
+          <span>/ week</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <ul>
+          <li>Weekly site snapshot</li>
+          <li>Job status: On Track / At Risk / Behind</li>
+          <li>What is holding jobs up</li>
+          <li>Labour signal</li>
+          <li>Clear next actions</li>
+        </ul>
+
+        <div class="cta-wrap">
+          <a href="#" class="btn">Start with Audit</a>
+        </div>
+      </div>
+
+      <div class="card popular">
+        <div class="badge">Most Popular</div>
+        <h2>Control</h2>
+        <p class="desc">
+          For builders who want stronger site discipline, better logs, and clearer labour visibility.
+        </p>
+
+        <div class="price">
+          <strong>$500–$800</strong>
+          <span>/ week</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <ul>
+          <li>Everything in Visibility</li>
+          <li>Daily log structure setup</li>
+          <li>Sign-in tracking</li>
+          <li>Labour vs activity insights</li>
+          <li>Improved reporting consistency</li>
+        </ul>
+
+        <div class="cta-wrap">
+          <a href="#" class="btn">Start with Audit</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="badge">Advanced</div>
+        <h2>Full Site Control</h2>
+        <p class="desc">
+          For builders who want one system covering visibility, reporting, inductions, and compliance gaps.
+        </p>
+
+        <div class="price">
+          <strong>$800–$1,200</strong>
+          <span>/ week</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <ul>
+          <li>Everything in Control</li>
+          <li>Induction system setup</li>
+          <li>SWMS tracking</li>
+          <li>Compliance status per site</li>
+          <li>Risk alerts for missing inductions / SWMS</li>
+        </ul>
+
+        <div class="cta-wrap">
+          <a href="#" class="btn">Start with Audit</a>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="bottom-note">
+      Start with an audit first. That shows where reporting is weak, where site visibility drops off,
+      and what level of support actually fits your business.
     </div>
 
-    <!-- CONTROL -->
-    <div class="card highlight">
-      <h2>Control</h2>
-      <p class="price">$500 – $800 / week</p>
-
-      <ul>
-        <li>Everything in Visibility</li>
-        <li>Daily log structure setup</li>
-        <li>Sign-in tracking (who’s onsite)</li>
-        <li>Labour vs activity insights</li>
-        <li>Improved reporting consistency</li>
-      </ul>
-
-      <a href="#" class="btn">Start with Audit</a>
-    </div>
-
-    <!-- FULL CONTROL -->
-    <div class="card">
-      <h2>Full Site Control</h2>
-      <p class="price">$800 – $1,200 / week</p>
-
-      <ul>
-        <li>Everything in Control</li>
-        <li>Induction system setup</li>
-        <li>SWMS tracking</li>
-        <li>Compliance status per site</li>
-        <li>Risk alerts (missing inductions / SWMS)</li>
-      </ul>
-
-      <a href="#" class="btn">Start with Audit</a>
+    <div class="foot">
+      Pricing shown as guide only. Final scope depends on number of jobs, reporting quality,
+      and whether setup is <strong>visibility only</strong> or <strong>visibility + compliance</strong>.
     </div>
 
   </div>
-
-</div>
 
 </body>
 </html>
